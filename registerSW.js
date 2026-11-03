@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/miles-ahead-orchestra-app/sw.js', { scope: '/miles-ahead-orchestra-app/' })})}
