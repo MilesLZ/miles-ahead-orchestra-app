@@ -16,3 +16,23 @@ self.addEventListener('notificationclick', (event) => {
     })(),
   )
 })
+
+// A reminder pushed from the server (works while the app is closed). iOS and other browsers require that every push
+// shows a notification, so this always does, even if the message could not be read.
+self.addEventListener('push', (event) => {
+  let data = {}
+  try {
+    data = event.data ? event.data.json() : {}
+  } catch (e) {
+    data = { body: event.data ? event.data.text() : '' }
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Orchestra reminder', {
+      body: data.body || '',
+      tag: data.tag || undefined, // same task + moment replaces itself instead of stacking
+      data: { taskId: data.taskId || '' },
+      icon: 'icon-192.png',
+      badge: 'icon-192.png',
+    }),
+  )
+})
